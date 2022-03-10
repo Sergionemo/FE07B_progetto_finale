@@ -1,0 +1,35 @@
+<header class="navbar navbar-dark sticky-top bg-dark flex-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">My CRM</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+    data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <nav class="navbar navbar-expand navbar-light bg-dark ">
+    <ul class="navbar-nav d-flex">
+      <li class="nav-item">
+        <a class="nav-link active" aria-current="page" [routerLink]="['/']" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/signup']" routerLinkActive="active">Signup</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/utenti']" routerLinkActive="active">Utenti</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/clienti']" routerLinkActive="active">Clienti</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/fatture']" routerLinkActive="active">Fatture</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="navbar-nav">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3 btn btn-danger" (click)="Logout()">Sign out</a>
+    </div>
+  </div>
+</header>
