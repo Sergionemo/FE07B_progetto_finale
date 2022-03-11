@@ -1,3 +1,5 @@
+import { Cliente } from "./cliente";
+
 export interface Fattura {
   id: number;
   data: string;
@@ -8,5 +10,5 @@ export interface Fattura {
     id: number;
     nome: string;
   };
-  cliente: any
+  cliente: Cliente
 }

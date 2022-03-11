@@ -15,6 +15,7 @@ import { MyHttpInterceptor } from './interceptors/my-http.interceptor';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DettagliClientePage } from './components/dettagli-cliente.page';
+import { DettagliFatturaPage } from './components/dettagli-fattura.page';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DettagliClientePage } from './components/dettagli-cliente.page';
     FatturePage,
     NavbarComponent,
     DettagliClientePage,
+    DettagliFatturaPage,
   ],
   imports: [
     BrowserModule,
