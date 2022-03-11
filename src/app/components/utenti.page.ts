@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { User } from '../models/user';
 
 @Component({
   template: `
@@ -13,22 +14,11 @@ import { AuthService } from '../services/auth.service';
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row"></th>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th scope="row">2</th>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <th scope="row"></th>
-          <td colspan="2"></td>
-          <td></td>
+        <tr *ngFor="let utente of utenti; let i = index">
+          <th scope="row">{{ utente.id }}</th>
+          <td>{{ utente.username }}</td>
+          <td>{{ utente.email }}</td>
+          <td *ngFor="let item of utente.roles">{{ item.roleName }}</td>
         </tr>
       </tbody>
     </table>
@@ -38,7 +28,11 @@ import { AuthService } from '../services/auth.service';
 export class UtentiPage implements OnInit {
   constructor(private authSrv: AuthService) {}
 
-  ngOnInit(): void {
-    this.authSrv.getAll();
+  utenti!: Array<User>;
+
+  async ngOnInit() {
+    this.authSrv.getAll().subscribe(c => {
+      this.utenti = c.content
+    });
   }
 }

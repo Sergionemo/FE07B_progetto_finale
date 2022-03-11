@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ClientiPage } from './components/clienti.page';
+import { DettagliClientePage } from './components/dettagli-cliente.page';
 import { FatturePage } from './components/fatture.page';
 import { HomePage } from './components/home.page';
 import { LoginPage } from './components/login.page';
@@ -32,6 +33,10 @@ const routes: Routes = [
     path: 'fatture',
     component: FatturePage,
   },
+  {
+    path: 'dettagliCliente',
+    component: DettagliClientePage,
+  }
 ];
 
 @NgModule({

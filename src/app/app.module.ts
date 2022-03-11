@@ -13,6 +13,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MyHttpInterceptor } from './interceptors/my-http.interceptor';
 import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DettagliClientePage } from './components/dettagli-cliente.page';
 
 @NgModule({
   declarations: [
@@ -24,8 +26,15 @@ import { FormsModule } from '@angular/forms';
     ClientiPage,
     FatturePage,
     NavbarComponent,
+    DettagliClientePage,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    NgbModule,
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

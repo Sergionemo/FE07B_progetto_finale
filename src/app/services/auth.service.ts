@@ -9,12 +9,7 @@ import { User } from '../models/user';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  signup(item: {
-    username: string;
-    email: string;
-    password: string;
-    role: any;
-  }) {
+  signup(item:any) {
     console.log(item);
     return this.http.post(`${environment.pathApi}/api/auth/signup`, item);
   }
@@ -24,6 +19,6 @@ export class AuthService {
   }
 
   getAll() {
-    return this.http.get<User[]>(`${environment.pathApi}/api/users`);
+    return this.http.get<any>(`${environment.pathApi}/api/users`);
   }
 }
