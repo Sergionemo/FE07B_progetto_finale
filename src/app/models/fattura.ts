@@ -1,4 +1,3 @@
-import { Cliente } from "./cliente";
 
 export interface Fattura {
   id: number;
@@ -10,5 +9,5 @@ export interface Fattura {
     id: number;
     nome: string;
   };
-  cliente: Cliente
+  cliente: any
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Fattura } from '../models/fattura';
 import { FatturaService } from '../services/fattura.service';
 
@@ -25,16 +26,15 @@ import { FatturaService } from '../services/fattura.service';
           <td>{{ fattura.importo }}€</td>
           <td>{{ fattura.stato.nome }}</td>
           <td>{{ fattura.cliente.ragioneSociale }}</td>
-          <td><a class="btn btn-info" [routerLink]="['/dettagliFattura/', fattura.id]" routerLinkActive="active" >Modifica</a></td>
-          <td><button class="btn btn-warning">Elimina</button></td>
           <td>
-            <!-- <button
-              class="btn btn-danger"
-              (click)="eliminaCliente(cliente.id, i)"
+            <a
+              class="btn btn-info"
+              [routerLink]="['/dettagliFattura/', fattura.id]"
+              routerLinkActive="active"
+              >Modifica</a
             >
-              Elimina
-            </button> -->
           </td>
+          <td><button class="btn btn-warning" (click)="elimina(fattura.id , i)">Elimina</button></td>
         </tr>
       </tbody>
     </table>
@@ -60,7 +60,7 @@ import { FatturaService } from '../services/fattura.service';
   styles: [],
 })
 export class FatturePage implements OnInit {
-  constructor(private fatturaSrv: FatturaService) {}
+  constructor(private fatturaSrv: FatturaService, private router:Router) {}
   fatture: any;
   response: any;
   pagCorr: number = 0;
@@ -69,9 +69,15 @@ export class FatturePage implements OnInit {
   ngOnInit(): void {
     this.fatturaSrv.getAll(0).subscribe((c) => {
       this.response = c;
-      console.log("🚀 ~ file: fatture.page.ts ~ line 72 ~ FatturePage ~ this.fatturaSrv.getAll ~ this.response", this.response)
+      console.log(
+        '🚀 ~ file: fatture.page.ts ~ line 72 ~ FatturePage ~ this.fatturaSrv.getAll ~ this.response',
+        this.response
+      );
       this.fatture = this.response.content;
-      console.log("🚀 ~ file: fatture.page.ts ~ line 73 ~ FatturePage ~ this.fatturaSrv.getAll ~ this.fatture", this.fatture)
+      console.log(
+        '🚀 ~ file: fatture.page.ts ~ line 73 ~ FatturePage ~ this.fatturaSrv.getAll ~ this.fatture',
+        this.fatture
+      );
       const numP = Array(this.response.totalPages);
       this.numP = numP;
     });
@@ -85,6 +91,12 @@ export class FatturePage implements OnInit {
       this.fatture = this.response.content;
       this.pagCorr = page;
       console.log(this.pagCorr);
+    });
+  }
+
+  elimina(id: number, i:number) {
+    this.fatturaSrv.delete(id).subscribe(() => {
+      this.fatture.splice(i, 1)
     });
   }
 }

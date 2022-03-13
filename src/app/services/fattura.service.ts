@@ -23,7 +23,7 @@ export class FatturaService {
     return this.http.put(`${environment.pathApi}/api/fatture/${data.id}`, data);
   }
 
-  delete(item: any) {
-    return this.http.put(`${environment.pathApi}/api/fatture/`, item);
+  delete(id: any) {
+    return this.http.delete(`${environment.pathApi}/api/fatture/${id}`);
   }
 }
