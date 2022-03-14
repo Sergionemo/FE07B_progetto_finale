@@ -1,6 +1,7 @@
-import { Comune } from "./comune";
+import { Sede } from "./sede";
 
-export interface Cliente {
+
+export class Cliente {
   id: number;
   ragioneSociale: string;
   partitaIva: string;
@@ -12,20 +13,6 @@ export interface Cliente {
   cognomeContatto: string;
   telefonoContatto: string;
   emailContatto: string;
-  indirizzoSedeOperativa: {
-    id: number;
-    via: string;
-    civico: string;
-    cap: string;
-    localita: string;
-    comune: Comune;
-  };
-  indirizzoSedeLegale: {
-    id: number;
-    via: string;
-    civico: string;
-    cap: string;
-    localita: string;
-    comune: Comune;
-  };
+  indirizzoSedeOperativa: Sede = new Sede();
+  indirizzoSedeLegale: Sede = new Sede();
 }

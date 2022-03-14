@@ -46,7 +46,13 @@ export class LoginPage implements OnInit {
   item!: any;
   users!: User;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    localStorage.getItem('utente');
+    console.log(
+      'localStorage.getItem("utente")',
+      localStorage.getItem('utente')
+    );
+  }
 
   login(form: NgForm) {
     console.log(form.value);
@@ -56,6 +62,8 @@ export class LoginPage implements OnInit {
       this.users = res;
       localStorage.setItem('utente', JSON.stringify(this.users));
       this.router.navigate(['/utenti']);
+      localStorage.getItem("utente");
+      console.log('localStorage.getItem("utente")', localStorage.getItem("utente"))
     });
   }
 }

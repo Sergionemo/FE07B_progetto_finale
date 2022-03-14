@@ -18,9 +18,10 @@ import { FatturaService } from '../services/fattura.service';
           <p class="card-text">
             Stato Fattura :
             <select name="stato" id="stato" ngModel>
-              <option value="{{ fattura.stato.nome }}" selected></option>
-              <option value="PAGATA">PAGATA</option>
-              <option value="NON PAGATA">NON PAGATA</option>
+              <!-- <option value="{{ fattura.stato.nome }}" selected></option> -->
+              <option value=""></option>
+              <option value="2">PAGATA</option>
+              <option value="1">NON PAGATA</option>
             </select>
           </p>
           <p class="card-text">ID unico: {{ fattura.id }}</p>
@@ -63,25 +64,17 @@ export class DettagliFatturaPage implements OnInit {
 
   caricaDettagli(id: number) {
     this.fatturaSrv.dettagli(id).subscribe((res) => {
-      console.log(
-        '🚀 ~ file: dettagli-fattura.page.ts ~ line 69 ~ DettagliFatturaPage ~ this.fatturaSrv.dettagli ~ res',
-        res
-      );
       this.fattura = res;
-      // console.log(
-      //   '🚀 ~ file: dettagli-fattura.page.ts ~ line 67 ~ DettagliFatturaPage ~ this.fatturaSrv.dettagli ~ this.response',
-      //   this.fattura.cliente
-      // );
       this.cliente = this.fattura.cliente;
     });
   }
 
   salva(form: NgForm) {
-    debugger;
     console.log(form.value.stato);
-    this.fattura.stato.nome = form.value.stato;
+    this.fattura.stato.id = form.value.stato;
     console.log(this.fattura);
     this.fatturaSrv.modifica(this.fattura).subscribe((res) => {
+      console.log(res);
       this.router.navigate(['/fatture']);
     });
   }

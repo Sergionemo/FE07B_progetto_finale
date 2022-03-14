@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { User } from '../models/user';
 
@@ -7,7 +8,7 @@ import { User } from '../models/user';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router:Router) {}
 
   signup(item:any) {
     console.log(item);
@@ -20,5 +21,10 @@ export class AuthService {
 
   getAll() {
     return this.http.get<any>(`${environment.pathApi}/api/users`);
+  }
+
+  logout() {
+    this.router.navigate(["/login"]);
+    localStorage.removeItem("utente");
   }
 }

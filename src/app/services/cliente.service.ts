@@ -27,4 +27,10 @@ export class ClienteService {
   delete(id:number) {
     return this.http.delete(`${environment.pathApi}/api/clienti/${id}`);
   }
+
+  getFattureByCliente(id: number, p: number) {
+    return this.http.get(
+      `${environment.pathApi}/api/fatture/cliente/${id}?page=${p}&size=20&sort=id,ASC`
+    );
+  }
 }

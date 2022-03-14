@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Cliente } from '../models/cliente';
 import { Comune } from '../models/comune';
 import { Provincia } from '../models/provincia';
 import { ComuniProvinceService } from '../services/comuni-province.service';
@@ -8,7 +9,11 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
 
 @Component({
   template: `
-    <form #form="ngForm" class="container mt-5 mb-5" (ngSubmit)="inviaDati(form)">
+    <form
+      #form="ngForm"
+      (ngSubmit)="inviaDati(form)"
+      class="container mt-5 mb-5"
+    >
       <h2>Informazioni personali cliente</h2>
       <div class="mb-3">
         <label for="ragioneSociale">Ragione sociale *</label>
@@ -105,6 +110,16 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
           class="form-control"
           [(ngModel)]="form.value.telefonoContatto"
           name="telefonoContatto"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="emailContatto">Email Contatto *</label>
+        <input
+          type="text"
+          id="emailContatto"
+          class="form-control"
+          [(ngModel)]="form.value.emailContatto"
+          name="emailContatto"
         />
       </div>
       <h2>Sede Operativa</h2>
@@ -260,20 +275,6 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
           class="form-control"
           [(ngModel)]="provincia2"
         />
-        <!-- <select
-          class="form-select"
-          aria-label="Default select example"
-          id="provinciaSedeLegale"
-          [(ngModel)]="form.value.provinciaSedeLegale"
-          name="provinciaSedeLegale"
-        >
-          <option
-            *ngFor="let comune of com; let i = index"
-            value="{{ comune.provincia.nome }}"
-          >
-            {{ comune.provincia.nome }}
-          </option>
-        </select> -->
       </div>
       <div>
         <button type="submit" class="btn btn-success">Crea cliente</button>
@@ -287,7 +288,7 @@ export class DettagliClientePage implements OnInit {
     private dettClienteSrv: DettagliClienteService,
     private comProvSrv: ComuniProvinceService,
     private router: Router
-  ) {}
+  ) { }
 
   tipiClienti: any;
   comuni: Comune[];
@@ -296,7 +297,50 @@ export class DettagliClientePage implements OnInit {
   idCitta: any;
   com: any;
   provincia1: string;
+  sigla1: any;
   provincia2: string;
+  sigla2: any;
+
+  nuovoCliente: Cliente = new Cliente()
+
+  newClient = {
+    ragioneSociale: '',
+    partitaIva: '',
+    tipoCliente: '',
+    email: '',
+    pec: '',
+    telefono: '',
+    nomeContatto: '',
+    cognomeContatto: '',
+    telefonoContatto: '',
+    emailContatto: '',
+    indirizzoSedeOperativa: {
+      via: '',
+      civico: '',
+      cap: '',
+      localita: '',
+      comune: {
+        nome: '',
+        provincia: {
+          nome: '',
+          sigla: '',
+        },
+      },
+    },
+    indirizzoSedeLegale: {
+      via: '',
+      civico: '',
+      cap: '',
+      localita: '',
+      comune: {
+        nome: '',
+        provincia: {
+          nome: '',
+          sigla: '',
+        },
+      },
+    },
+  };
 
   ngOnInit(): void {
     this.dettClienteSrv.getTipiCliente().subscribe((c) => {
@@ -311,8 +355,6 @@ export class DettagliClientePage implements OnInit {
       console.log('c', c);
       this.response = c;
       this.comuni = this.response.content;
-      this.com = this.comuni;
-      console.log('this.com', this.com);
     });
   }
 
@@ -322,6 +364,8 @@ export class DettagliClientePage implements OnInit {
       this.response = c;
       console.log('this.response', this.response.provincia.nome);
       this.provincia1 = this.response.provincia.nome;
+      this.sigla1 = this.response.provincia.sigla;
+      console.log(this.sigla1);
     });
   }
 
@@ -331,12 +375,48 @@ export class DettagliClientePage implements OnInit {
       this.response = c;
       console.log('this.response', this.response.provincia.nome);
       this.provincia2 = this.response.provincia.nome;
+      this.sigla2 = this.response.provincia.sigla;
     });
   }
 
-  inviaDati(form: NgForm) {
-    this.dettClienteSrv.creaNuovoCliente(form).subscribe(()=> {
-      this.router.navigate(["/clienti"])
-    })
+  inviaDati(cliente: any) {
+    this.nuovoCliente = cliente;
+    console.log(this.nuovoCliente);
   }
 }
+//  this.newClient.ragioneSociale = cliente.value.ragioneSociale;
+    // this.newClient.tipoCliente = cliente.value.tipoCliente;
+    // this.newClient.email = cliente.value.email;
+    // this.newClient.pec = cliente.value.pec;
+    // this.newClient.telefono = cliente.value.telefono;
+    // this.newClient.nomeContatto = cliente.value.nomeContatto;
+    // this.newClient.cognomeContatto = cliente.value.cognomeContatto;
+    // this.newClient.telefonoContatto = cliente.value.telefonoContatto;
+    // this.newClient.emailContatto = cliente.value.emailContatto;
+    // this.newClient.indirizzoSedeOperativa.via = cliente.value.viaSedeOperativa;
+    // this.newClient.indirizzoSedeOperativa.civico =
+    //   cliente.value.civicoSedeOperativa;
+    // this.newClient.indirizzoSedeOperativa.cap = cliente.value.capSedeOperativa;
+    // this.newClient.indirizzoSedeOperativa.localita =
+    //   cliente.value.localitaSedeOperativa;
+    // this.newClient.indirizzoSedeOperativa.comune.nome =
+    //   cliente.value.comuneSedeOperativa;
+    // this.newClient.indirizzoSedeOperativa.comune.provincia.nome =
+    //   this.provincia1;
+    // console.log(this.sigla1);
+    // console.log(cliente);
+
+    // this.newClient.indirizzoSedeOperativa.comune.provincia.sigla = this.sigla1
+
+    // this.newClient.indirizzoSedeLegale.via = cliente.value.viaSedeLegale;
+    // this.newClient.indirizzoSedeLegale.civico =
+    //   cliente.value.civicoSedeLegale;
+    // this.newClient.indirizzoSedeLegale.cap = cliente.value.capSedeLegale;
+    // this.newClient.indirizzoSedeLegale.localita =
+    //   cliente.value.localitaSedeLegale;
+    // this.newClient.indirizzoSedeLegale.comune.nome =
+    //   cliente.value.comuneSedeLegale;
+    // this.newClient.indirizzoSedeLegale.comune.provincia.nome = this.provincia2;
+    // console.log(this.sigla1);
+    // this.newClient.indirizzoSedeLegale.comune.provincia.sigla = this.sigla2;
+    // console.log(this.newClient);

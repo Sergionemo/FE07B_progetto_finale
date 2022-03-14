@@ -3,11 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { ClientiPage } from './components/clienti.page';
 import { DettagliClientePage } from './components/dettagli-cliente.page';
 import { DettagliFatturaPage } from './components/dettagli-fattura.page';
+import { FattureClientePage } from './components/fatture-cliente.page';
 import { FatturePage } from './components/fatture.page';
 import { HomePage } from './components/home.page';
 import { LoginPage } from './components/login.page';
 import { SignupPage } from './components/signup.page';
 import { UtentiPage } from './components/utenti.page';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -17,6 +19,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+    canActivate: [AuthGuard],
   },
   {
     path: 'signup',
@@ -25,23 +28,33 @@ const routes: Routes = [
   {
     path: 'clienti',
     component: ClientiPage,
+    canActivate: [AuthGuard],
   },
   {
     path: 'utenti',
     component: UtentiPage,
+    canActivate: [AuthGuard],
   },
   {
     path: 'fatture',
     component: FatturePage,
+    canActivate: [AuthGuard],
   },
   {
     path: 'dettagliCliente',
     component: DettagliClientePage,
+    canActivate: [AuthGuard],
   },
   {
     path: 'dettagliFattura/:id',
     component: DettagliFatturaPage,
+    canActivate: [AuthGuard],
   },
+  {
+    path: 'fattureCliente/:id',
+    component: FattureClientePage,
+    canActivate: [AuthGuard],
+  }
 ];
 
 @NgModule({

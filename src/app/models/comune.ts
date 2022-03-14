@@ -1,7 +1,7 @@
 import { Provincia } from "./provincia";
 
-export interface Comune {
+export class Comune {
   id: number;
   nome: string;
-  provincia: Provincia
+  provincia: Provincia = new Provincia();
 }

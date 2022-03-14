@@ -13,7 +13,14 @@ import { ClienteService } from '../services/cliente.service';
           <th scope="col">Ragione sociale</th>
           <th scope="col">Email</th>
           <th scope="col">Partita Iva</th>
-          <th scope="col"><a class="btn btn-success" [routerLink]="['/dettagliCliente']" routerLinkActive="active" >Nuovo Cliente</a></th>
+          <th scope="col">
+            <a
+              class="btn btn-success"
+              [routerLink]="['/dettagliCliente']"
+              routerLinkActive="active"
+              >Nuovo Cliente</a
+            >
+          </th>
         </tr>
       </thead>
       <tbody *ngFor="let cliente of clienti; let i = index">
@@ -22,10 +29,21 @@ import { ClienteService } from '../services/cliente.service';
           <td>{{ cliente.ragioneSociale }}</td>
           <td>{{ cliente.email }}</td>
           <td>{{ cliente.partitaIva }}</td>
-          <td><button class="btn btn-info">Fatture</button></td>
+          <td>
+            <button
+              class="btn btn-info"
+              [routerLink]="['/fattureCliente', cliente.id]"
+              routerLinkActive="active"
+            >
+              Fatture
+            </button>
+          </td>
           <td><button class="btn btn-warning">Modifica</button></td>
           <td>
-            <button class="btn btn-danger" (click)="eliminaCliente(cliente.id, i)">
+            <button
+              class="btn btn-danger"
+              (click)="eliminaCliente(cliente.id, i)"
+            >
               Elimina
             </button>
           </td>
@@ -129,15 +147,14 @@ export class ClientiPage implements OnInit {
       this.response = c;
       this.clienti = this.response.content;
       this.pagCorr = page;
-      console.log(this.pagCorr);
+      // console.log(this.pagCorr);
     });
   }
 
   async eliminaCliente(idCliente: number, i: number) {
-    debugger
     this.idCliente = idCliente;
-    console.log(this.idCliente);
-    console.log(this.pagCorr);
+    // console.log(this.idCliente);
+    // console.log(this.pagCorr);
     let id = this.pagCorr * 20 + this.idCliente;
     console.log(id);
     await this.clientiSrv.deleteFatture(idCliente).toPromise();
@@ -146,31 +163,29 @@ export class ClientiPage implements OnInit {
       this.router.navigate(['/clienti']);
       this.clienti.splice(i, 1);
     });
-
   }
 
-
-  open(content, id: number) {
-    this.idCliente = id  ;
-    console.log(this.idCliente);
-    this.modalService
-      .open(content, { ariaLabelledBy: 'modal-basic-title' })
-      .result.then(
-        (result) => {
-          this.closeResult = `Closed with: ${result}`;
-        },
-        (reason) => {
-          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-        }
-      );
-  }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
+  // open(content, id: number) {
+  //   this.idCliente = id;
+  //   console.log(this.idCliente);
+  //   this.modalService
+  //     .open(content, { ariaLabelledBy: 'modal-basic-title' })
+  //     .result.then(
+  //       (result) => {
+  //         this.closeResult = `Closed with: ${result}`;
+  //       },
+  //       (reason) => {
+  //         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //       }
+  //     );
+  // }
+  // private getDismissReason(reason: any): string {
+  //   if (reason === ModalDismissReasons.ESC) {
+  //     return 'by pressing ESC';
+  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+  //     return 'by clicking on a backdrop';
+  //   } else {
+  //     return `with: ${reason}`;
+  //   }
+  // }
 }
