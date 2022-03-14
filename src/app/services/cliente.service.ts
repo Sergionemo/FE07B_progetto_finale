@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { Cliente } from '../models/cliente';
 
 @Injectable({
   providedIn: 'root',
@@ -15,16 +16,14 @@ export class ClienteService {
   }
 
   getById(id: number) {
-    return this.http.get(
-      `${environment.pathApi}/api/clienti/${id}`
-    );
+    return this.http.get(`${environment.pathApi}/api/clienti/${id}`);
   }
 
-  deleteFatture(id:number) {
+  deleteFatture(id: number) {
     return this.http.delete(`${environment.pathApi}/api/fatture/cliente/${id}`);
   }
 
-  delete(id:number) {
+  delete(id: number) {
     return this.http.delete(`${environment.pathApi}/api/clienti/${id}`);
   }
 
@@ -32,5 +31,8 @@ export class ClienteService {
     return this.http.get(
       `${environment.pathApi}/api/fatture/cliente/${id}?page=${p}&size=20&sort=id,ASC`
     );
+  }
+  createCliente(cliente: Cliente) {
+    return this.http.post(`${environment.pathApi}/api/clienti`, cliente);
   }
 }
