@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cliente } from '../models/cliente';
 import { Comune } from '../models/comune';
 import { Provincia } from '../models/provincia';
@@ -9,7 +9,7 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
 
 @Component({
   template: `
-    <form class="mt-5 container" #form="ngForm">
+    <form class="mt-5 container">
       <h2>Informazioni personali</h2>
       <div class="form-row">
         <div class="form-group col">
@@ -168,54 +168,28 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
                 class="form-control"
               />
             </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Provincia</label>
-              <!-- <select
-                class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeOperativa.comune.provincia"
-                name="nome"
-                class="form-control"
-                (change)="cambioCitta1($event)"
-              >
-                <option selected>Seleziona Provincia</option>
-                <option
-                  *ngFor="let item of province"
-                  id="{{ item.id }}"
-                  value="{{ item.id }}"
+            <div class="form-row">
+              <div class="form-group">
+                <label>Provincia</label>
+                <select
+                  class="form-select"
+                  [(ngModel)]="
+                    newCliente.indirizzoSedeOperativa.comune.provincia
+                  "
+                  name="nome"
+                  class="form-control"
                 >
-                  {{ item.nome }}
-                </option>
-              </select> -->
-              <select
-                class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeOperativa.comune.provincia"
-                name="nome"
-                class="form-control"
-              >
-                <option selected>Seleziona Provincia</option>
-                <option *ngFor="let item of province" [ngValue]="item">
-                  {{ item.nome }}
-                </option>
-              </select>
+                  <option selected>Seleziona Provincia</option>
+                  <option *ngFor="let item of province" [ngValue]="item">
+                    {{ item.nome }}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
-
           <div class="form-row">
             <div class="form-group">
               <label>Comune</label>
-              <!-- <select
-                class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeOperativa.comune"
-                name="nome"
-                class="form-control"
-              >
-                <option selected>Seleziona Comune</option>
-                <option *ngFor="let item of filterComuni" value="{{ item.id }}">
-                  {{ item.nome }}
-                </option>
-              </select> -->
               <select
                 class="form-select"
                 [(ngModel)]="newCliente.indirizzoSedeOperativa.comune"
@@ -312,9 +286,9 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
           <button
             type="submit"
             class="btn btnAddUser col my-3 btn-success"
-            (click)="addCliente(newCliente)"
+            (click)="modificaCliente(newCliente)"
           >
-            Aggiungi
+            Modifica
           </button>
         </form>
       </div>
@@ -322,11 +296,12 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
   `,
   styles: [],
 })
-export class DettagliClientePage implements OnInit {
+export class ModificaClientePage implements OnInit {
   constructor(
     private dettClienteSrv: DettagliClienteService,
     private comProvSrv: ComuniProvinceService,
     private router: Router,
+    private route: ActivatedRoute,
     private clientSrv: ClienteService
   ) {}
 
@@ -334,10 +309,8 @@ export class DettagliClientePage implements OnInit {
   comuni: Comune[];
   province: Provincia[];
   response: any;
-  idProvincia: any;
-  provincia1: string;
-  provincia2: string;
-  filterComuni: Comune[] = [];
+  idCliente: any
+  cliente:Cliente
 
   newCliente: Cliente = new Cliente();
 
@@ -351,29 +324,24 @@ export class DettagliClientePage implements OnInit {
       this.province = this.response.content;
     });
     this.comProvSrv.getAllComuni(0).subscribe((c) => {
-      console.log('c', c);
       this.response = c;
       this.comuni = this.response.content;
     });
-  }
-  cambioCitta1(event: any) {
-    this.idProvincia = event.target.value;
-    console.log(this.idProvincia);
-    let filterComuni: Array<any> = [];
-    this.comuni.filter((comune) => {
-      if (this.idProvincia == comune.provincia.id) {
-        filterComuni.push(comune);
-      }
-    });
-    console.log(filterComuni);
-    this.filterComuni = filterComuni;
+    this.route.params.subscribe((params) => {
+      this.idCliente = +params['id'];
+    })
+    this.clientSrv.getById(this.idCliente).subscribe((c) => {
+      this.response = c;
+      this.cliente = this.response;
+      console.log(this.cliente);
+      this.newCliente = this.cliente
+    })
   }
 
-  addCliente(newCliente: Cliente) {
-    console.log(newCliente);
-    this.clientSrv.createCliente(newCliente).subscribe((res) => {
+  modificaCliente(newCliente: Cliente) {
+    this.clientSrv.modifica(newCliente).subscribe(res => {
       console.log(res);
       this.router.navigate(['/clienti']);
-    });
+    })
   }
 }

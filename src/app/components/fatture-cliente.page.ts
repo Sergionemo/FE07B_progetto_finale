@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Fattura } from '../models/fattura';
 import { ClienteService } from '../services/cliente.service';
 import { FatturaService } from '../services/fattura.service';
@@ -16,7 +17,14 @@ import { FatturaService } from '../services/fattura.service';
           <th scope="col">Importo</th>
           <th scope="col">Stato</th>
           <th scope="col">Cliente</th>
-          <th scope="col"><a class="btn btn-success" [routerLink]="['/newFattura' ,id]" routerLinkActive="active" >Nuova Fattura</a></th>
+          <th scope="col">
+            <a
+              class="btn btn-success"
+              [routerLink]="['/newFattura', id]"
+              routerLinkActive="active"
+              >Nuova Fattura</a
+            >
+          </th>
         </tr>
       </thead>
       <tbody *ngFor="let fattura of fatture; let i = index">
@@ -37,9 +45,43 @@ import { FatturaService } from '../services/fattura.service';
             >
           </td>
           <td>
-            <button class="btn btn-warning" (click)="elimina(fattura.id, i)">
+            <button class="btn btn-warning" (click)="open(mymodal)">
               Elimina
             </button>
+            <ng-template #mymodal let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Sei sicuro?</h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Procedendo eliminerai la fattura numero
+                <strong>{{ fattura.numero }}</strong> del cliente
+                <strong>{{ fattura.cliente.ragioneSociale }}</strong>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="modal.close('Save click')"
+                >
+                  Indietro
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="elimina(fattura.id, i); modal.close()"
+                >
+                  Si, sono sicuro
+                </button>
+              </div>
+            </ng-template>
           </td>
         </tr>
       </tbody>
@@ -66,20 +108,21 @@ export class FattureClientePage implements OnInit {
   constructor(
     private clienteSrv: ClienteService,
     private route: ActivatedRoute,
-    private fatturaSrv: FatturaService
+    private fatturaSrv: FatturaService,
+    private modalService: NgbModal
   ) {}
 
   response: any;
   fatture: Fattura[];
   numP: any;
   id!: number;
+  closeResult: any;
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.id = +params['id'];
       console.log(this.id);
       this.caricaDettagli(this.id);
-
     });
   }
 
@@ -94,7 +137,7 @@ export class FattureClientePage implements OnInit {
     });
   }
 
-  cambiaPag(p:number) {
+  cambiaPag(p: number) {
     this.clienteSrv.getFattureByCliente(this.id, p).subscribe((c) => {
       this.response = c;
       this.fatture = this.response.content;
@@ -106,5 +149,26 @@ export class FattureClientePage implements OnInit {
     this.fatturaSrv.delete(id).subscribe(() => {
       this.fatture.splice(i, 1);
     });
+  }
+  open(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

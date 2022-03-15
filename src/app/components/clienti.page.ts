@@ -38,59 +38,49 @@ import { ClienteService } from '../services/cliente.service';
               Fatture
             </button>
           </td>
-          <td><button class="btn btn-warning">Modifica</button></td>
+          <td><button class="btn btn-warning" [routerLink]="['/modificaCliente', cliente.id]" routerLinkActive="active" >Modifica</button></td>
           <td>
-            <button
-              class="btn btn-danger"
-              (click)="eliminaCliente(cliente.id, i)"
-            >
+            <button class="btn btn-danger" (click)="open(mymodal)">
               Elimina
             </button>
+            <ng-template #mymodal let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Sei sicuro?</h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Procedendo eliminerai il cliente
+                <strong>{{ cliente.ragioneSociale }}</strong> e tutte le sue
+                fatture: sei sicuro?
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="modal.close('Save click')"
+                >
+                  Indietro
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="eliminaCliente(cliente.id, i); modal.close()"
+                >
+                  Si, sono sicuro
+                </button>
+              </div>
+            </ng-template>
           </td>
         </tr>
       </tbody>
     </table>
-    <!-- <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">
-          Vuoi eliminare questo cliente?
-        </h4>
-        <button
-          type="button"
-          class="btn-close"
-          aria-label="Close"
-          (click)="modal.dismiss('Cross click')"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <div class="input-group">
-            <p>
-              Stai per eliminare definitivamente il cliente
-              {{ clienti[idCliente].nomeContatto }}
-              {{ clienti[idCliente].cognomeContatto }} e non potrà essere
-              recuperato
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-success"
-          (click)="eliminaCliente(idCliente)"
-        >
-          Conferma
-        </button>
-        <button
-          type="button"
-          class="btn btn-outline-dark"
-          (click)="modal.close('Save click')"
-        >
-          Chiudi
-        </button>
-      </div>
-    </ng-template> -->
     <nav aria-label="Page navigation">
       <ul class="pagination">
         <li class="page-item" *ngIf="!response.first">
@@ -165,27 +155,25 @@ export class ClientiPage implements OnInit {
     });
   }
 
-  // open(content, id: number) {
-  //   this.idCliente = id;
-  //   console.log(this.idCliente);
-  //   this.modalService
-  //     .open(content, { ariaLabelledBy: 'modal-basic-title' })
-  //     .result.then(
-  //       (result) => {
-  //         this.closeResult = `Closed with: ${result}`;
-  //       },
-  //       (reason) => {
-  //         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //       }
-  //     );
-  // }
-  // private getDismissReason(reason: any): string {
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return `with: ${reason}`;
-  //   }
-  // }
+  open(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
 }

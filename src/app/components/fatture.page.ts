@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Fattura } from '../models/fattura';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FatturaService } from '../services/fattura.service';
 
 @Component({
@@ -34,7 +33,45 @@ import { FatturaService } from '../services/fattura.service';
               >Modifica</a
             >
           </td>
-          <td><button class="btn btn-warning" (click)="elimina(fattura.id , i)">Elimina</button></td>
+          <td>
+            <button class="btn btn-warning" (click)="open(mymodal)">
+              Elimina
+            </button>
+            <ng-template #mymodal let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Sei sicuro?</h4>
+                <button
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                  (click)="modal.dismiss('Cross click')"
+                >
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Procedendo eliminerai la fattura numero
+                <strong>{{ fattura.numero }}</strong> del cliente
+                <strong>{{ fattura.cliente.ragioneSociale }}</strong>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="modal.close('Save click')"
+                >
+                  Indietro
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="elimina(fattura.id, i); modal.close()"
+                >
+                  Si, sono sicuro
+                </button>
+              </div>
+            </ng-template>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -52,7 +89,9 @@ import { FatturaService } from '../services/fattura.service';
           <a class="page-link" (click)="cambiaPag(response.number + 1)">Next</a>
         </li>
         <li class="page-item" *ngIf="!response.last">
-          <a class="page-link" (click)="cambiaPag(response.totalPages-1)">Last</a>
+          <a class="page-link" (click)="cambiaPag(response.totalPages - 1)"
+            >Last</a
+          >
         </li>
       </ul>
     </nav>
@@ -60,10 +99,14 @@ import { FatturaService } from '../services/fattura.service';
   styles: [],
 })
 export class FatturePage implements OnInit {
-  constructor(private fatturaSrv: FatturaService, private router:Router) {}
+  constructor(
+    private fatturaSrv: FatturaService,
+    private modalService: NgbModal
+  ) {}
   fatture: any;
   response: any;
   pagCorr: number = 0;
+  closeResult=""
   // numP: any;
 
   ngOnInit(): void {
@@ -86,9 +129,31 @@ export class FatturePage implements OnInit {
     });
   }
 
-  elimina(id: number, i:number) {
+  elimina(id: number, i: number) {
     this.fatturaSrv.delete(id).subscribe(() => {
-      this.fatture.splice(i, 1)
+      this.fatture.splice(i, 1);
     });
+  }
+
+  open(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

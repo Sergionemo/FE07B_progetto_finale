@@ -18,6 +18,7 @@ import { DettagliClientePage } from './components/dettagli-cliente.page';
 import { DettagliFatturaPage } from './components/dettagli-fattura.page';
 import { FattureClientePage } from './components/fatture-cliente.page';
 import { NewFatturaPage } from './components/new-fattura.page';
+import { ModificaClientePage } from './components/modifica-cliente.page';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { NewFatturaPage } from './components/new-fattura.page';
     DettagliFatturaPage,
     FattureClientePage,
     NewFatturaPage,
+    ModificaClientePage,
   ],
   imports: [
     BrowserModule,

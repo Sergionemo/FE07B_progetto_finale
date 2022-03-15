@@ -22,6 +22,21 @@ import { User } from '../models/user';
         </tr>
       </tbody>
     </table>
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" *ngIf="!response.first">
+          <a class="page-link" (click)="cambiaPag(response.number - 1)"
+            >Previous</a
+          >
+        </li>
+        <li class="page-item" *ngFor="let pag of numP; let p = index">
+          <a class="page-link" (click)="cambiaPag(p)">{{ p + 1 }}</a>
+        </li>
+        <li class="page-item" *ngIf="!response.last">
+          <a class="page-link" (click)="cambiaPag(response.number + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
   `,
   styles: [],
 })
@@ -29,10 +44,28 @@ export class UtentiPage implements OnInit {
   constructor(private authSrv: AuthService) {}
 
   utenti!: Array<User>;
+  response!: any;
+  pagCorr: any;
+  numP: any;
 
-  async ngOnInit() {
-    this.authSrv.getAll().subscribe(c => {
-      this.utenti = c.content
+  ngOnInit() {
+    this.authSrv.getAll(0).subscribe((c) => {
+      this.response = c;
+      console.log(this.response);
+      this.utenti = this.response.content
+      const numP = Array(this.response.totalPages);
+      this.numP = numP;
+    });
+  }
+
+  cambiaPag(page: number) {
+    this.authSrv.getAll(page).subscribe((c) => {
+      console.log(page);
+      // console.log(c);
+      this.response = c;
+      this.utenti = this.response.content;
+      this.pagCorr = page;
+      // console.log(this.pagCorr);
     });
   }
 }

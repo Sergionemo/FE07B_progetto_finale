@@ -19,8 +19,10 @@ export class AuthService {
     return this.http.post<any>(`${environment.pathApi}/api/auth/login`, item);
   }
 
-  getAll() {
-    return this.http.get<any>(`${environment.pathApi}/api/users`);
+  getAll(p: number) {
+    return this.http.get<any>(
+      `${environment.pathApi}/api/users?page=${p}&size=20&sort=id,ASC`
+    );
   }
 
   logout() {

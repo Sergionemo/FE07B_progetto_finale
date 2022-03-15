@@ -35,4 +35,8 @@ export class ClienteService {
   createCliente(cliente: Cliente) {
     return this.http.post(`${environment.pathApi}/api/clienti`, cliente);
   }
+
+  modifica(data: any) {
+    return this.http.put(`${environment.pathApi}/api/clienti/${data.id}`, data);
+  }
 }

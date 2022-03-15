@@ -64,6 +64,8 @@ export class LoginPage implements OnInit {
       this.router.navigate(['/utenti']);
       localStorage.getItem("utente");
       console.log('localStorage.getItem("utente")', localStorage.getItem("utente"))
+    }, rej => {
+      alert("Errore nella compilazione dei campi");
     });
   }
 }
