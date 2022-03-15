@@ -20,12 +20,14 @@ export class FatturaService {
   }
 
   modifica(data: any) {
-    // console.log(`${environment.pathApi}/api/fatture/${data.id}`);
-    // console.log(data);
     return this.http.put(`${environment.pathApi}/api/fatture/${data.id}`, data);
   }
 
   delete(id: any) {
     return this.http.delete(`${environment.pathApi}/api/fatture/${id}`);
+  }
+
+  creaFattura(data: any) {
+    return this.http.post(`${environment.pathApi}/api/fatture`, data);
   }
 }

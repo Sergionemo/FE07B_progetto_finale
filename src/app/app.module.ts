@@ -17,6 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DettagliClientePage } from './components/dettagli-cliente.page';
 import { DettagliFatturaPage } from './components/dettagli-fattura.page';
 import { FattureClientePage } from './components/fatture-cliente.page';
+import { NewFatturaPage } from './components/new-fattura.page';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { FattureClientePage } from './components/fatture-cliente.page';
     DettagliClientePage,
     DettagliFatturaPage,
     FattureClientePage,
+    NewFatturaPage,
   ],
   imports: [
     BrowserModule,

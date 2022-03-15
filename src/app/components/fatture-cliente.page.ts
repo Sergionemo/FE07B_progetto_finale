@@ -16,7 +16,7 @@ import { FatturaService } from '../services/fattura.service';
           <th scope="col">Importo</th>
           <th scope="col">Stato</th>
           <th scope="col">Cliente</th>
-          <th scope="col"><a class="btn btn-success">Nuova Fattura</a></th>
+          <th scope="col"><a class="btn btn-success" [routerLink]="['/newFattura' ,id]" routerLinkActive="active" >Nuova Fattura</a></th>
         </tr>
       </thead>
       <tbody *ngFor="let fattura of fatture; let i = index">
@@ -77,7 +77,9 @@ export class FattureClientePage implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.id = +params['id'];
+      console.log(this.id);
       this.caricaDettagli(this.id);
+
     });
   }
 
@@ -87,8 +89,8 @@ export class FattureClientePage implements OnInit {
       this.fatture = this.response.content;
       const numP = Array(this.response.totalPages);
       this.numP = numP;
-      console.log(this.numP);
-      // console.log('this.fatture', this.fatture);
+      // console.log(this.numP);
+      console.log('this.fatture', this.fatture);
     });
   }
 
@@ -96,7 +98,6 @@ export class FattureClientePage implements OnInit {
     this.clienteSrv.getFattureByCliente(this.id, p).subscribe((c) => {
       this.response = c;
       this.fatture = this.response.content;
-      console.log(this.numP);
       // console.log(this.pagCorr);
     });
   }

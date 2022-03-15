@@ -7,6 +7,7 @@ import { FattureClientePage } from './components/fatture-cliente.page';
 import { FatturePage } from './components/fatture.page';
 import { HomePage } from './components/home.page';
 import { LoginPage } from './components/login.page';
+import { NewFatturaPage } from './components/new-fattura.page';
 import { SignupPage } from './components/signup.page';
 import { UtentiPage } from './components/utenti.page';
 import { AuthGuard } from './guard/auth.guard';
@@ -54,7 +55,12 @@ const routes: Routes = [
     path: 'fattureCliente/:id',
     component: FattureClientePage,
     canActivate: [AuthGuard],
-  }
+  },
+  {
+    path: 'newFattura/:id',
+    component: NewFatturaPage,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
