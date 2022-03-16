@@ -27,22 +27,27 @@ import { FatturaService } from '../services/fattura.service';
           <td>{{ fattura.cliente.ragioneSociale }}</td>
           <td>
             <a
-              class="btn btn-info"
+              class="btn text-info pulsantiInt"
+              title="modifica"
               [routerLink]="['/dettagliFattura/', fattura.id]"
               routerLinkActive="active"
-              >Modifica</a
-            >
+              ><i class="bi bi-pencil-square"></i
+            ></a>
           </td>
           <td>
-            <button class="btn btn-warning" (click)="open(mymodal)">
-              Elimina
+            <button
+              class="btn text-warning pulsantiInt"
+              title="elimina"
+              (click)="open(mymodal)"
+            >
+              <i class="bi bi-trash"></i>
             </button>
             <ng-template #mymodal let-modal>
               <div class="modal-header">
                 <h4 class="modal-title" id="modal-basic-title">Sei sicuro?</h4>
                 <button
                   type="button"
-                  class="close"
+                  class="close btn"
                   aria-label="Close"
                   (click)="modal.dismiss('Cross click')"
                 >
@@ -75,28 +80,35 @@ import { FatturaService } from '../services/fattura.service';
         </tr>
       </tbody>
     </table>
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
+    <nav
+      aria-label="Page navigation"
+      class="d-flex justify-content-center mb-3"
+    >
+      <ul class="pagination mt-3 ">
         <li class="page-item" *ngIf="!response.first">
-          <a class="page-link" (click)="cambiaPag(response.first)">First</a>
+          <a class="myBtn" (click)="cambiaPag(response.first)"
+            ><i class="bi bi-skip-start"></i
+          ></a>
         </li>
         <li class="page-item" *ngIf="!response.first">
-          <a class="page-link" (click)="cambiaPag(response.number - 1)"
-            >Previous</a
-          >
+          <a class="myBtn" (click)="cambiaPag(response.number - 1)"
+            ><i class="bi bi-arrow-left"></i
+          ></a>
         </li>
         <li class="page-item" *ngIf="!response.last">
-          <a class="page-link" (click)="cambiaPag(response.number + 1)">Next</a>
+          <a class="myBtn" (click)="cambiaPag(response.number + 1)"
+            ><i class="bi bi-arrow-right"></i
+          ></a>
         </li>
         <li class="page-item" *ngIf="!response.last">
-          <a class="page-link" (click)="cambiaPag(response.totalPages - 1)"
-            >Last</a
-          >
+          <a class="myBtn " (click)="cambiaPag(response.totalPages - 1)"
+            ><i class="bi bi-skip-end"></i
+          ></a>
         </li>
       </ul>
     </nav>
   `,
-  styles: [],
+  styles: [``],
 })
 export class FatturePage implements OnInit {
   constructor(
@@ -106,7 +118,7 @@ export class FatturePage implements OnInit {
   fatture: any;
   response: any;
   pagCorr: number = 0;
-  closeResult=""
+  closeResult = '';
   // numP: any;
 
   ngOnInit(): void {

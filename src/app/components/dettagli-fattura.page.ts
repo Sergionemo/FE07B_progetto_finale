@@ -8,36 +8,37 @@ import { FatturaService } from '../services/fattura.service';
 @Component({
   template: `
     <form #form="ngForm" (ngSubmit)="salva(form)">
-      <div class="card">
+      <div class="card text-center">
         <div class="card-body">
-          <h5 class="card-title">{{ cliente.ragioneSociale }}</h5>
+          <h3 class="card-title">{{ cliente.ragioneSociale }}</h3>
           <h5 class="card-subtitle mb-2 text-muted">
             {{ cliente.nomeContatto }} {{ cliente.cognomeContatto }}
           </h5>
           <p class="card-text">Importo: {{ fattura.importo }}€</p>
-
           <p class="card-text">
             Stato Fattura :
             <select name="stato" id="stato" ngModel>
               <!-- <option value="{{ fattura.stato.nome }}" selected></option> -->
               <option value=""></option>
-              <option value="2">PAGATA</option>
-              <option value="1">NON PAGATA</option>
+              <option value="2" class="text-success">PAGATA</option>
+              <option value="1" class="text-danger">NON PAGATA</option>
             </select>
           </p>
           <p class="card-text">ID unico: {{ fattura.id }}</p>
           <p class="card-text">Data : {{ fattura.data | date }}</p>
           <div class="d-flex mt-5 justify-content-evenly">
-            <button type="submit" class="btn btn-success">Salva</button>
-            <button class="btn btn-danger" (click)="open(mymodal)">
-              Elimina
+            <button type="submit" class="btn text-success pulsantiInt">
+              <i class="bi bi-check-circle"></i>
+            </button>
+            <button class="btn text-danger pulsantiInt" (click)="open(mymodal)">
+              <i class="bi bi-trash"></i>
             </button>
             <ng-template #mymodal let-modal>
               <div class="modal-header">
                 <h4 class="modal-title" id="modal-basic-title">Sei sicuro?</h4>
                 <button
                   type="button"
-                  class="close"
+                  class="close btn"
                   aria-label="Close"
                   (click)="modal.dismiss('Cross click')"
                 >
@@ -52,7 +53,7 @@ import { FatturaService } from '../services/fattura.service';
               <div class="modal-footer">
                 <button
                   type="button"
-                  class="btn btn-secondary"
+                  class="btn btn-secondary "
                   (click)="modal.close('Save click')"
                 >
                   Indietro
@@ -75,6 +76,19 @@ import { FatturaService } from '../services/fattura.service';
     `
       form {
         margin: 20vh 20vw;
+      }
+      p {
+        font-size: 1.3rem;
+      }
+      .pulsantiInt {
+        font-size: 1.7rem;
+      }
+      select {
+        background-color: black;
+        color: white;
+      }
+      option {
+        color: white;
       }
     `,
   ],

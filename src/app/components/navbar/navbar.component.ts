@@ -16,6 +16,10 @@ export class NavbarComponent implements OnInit {
     // console.log('localStorage.getItem("utente");', localStorage.getItem("utente"))
   }
 
+  isLoggedUser(): boolean {
+    return localStorage.getItem('utente') !== null;
+  }
+
   Logout() {
     this.authSrv.logout();
   }

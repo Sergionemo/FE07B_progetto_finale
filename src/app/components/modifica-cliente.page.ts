@@ -173,9 +173,8 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
                 <label>Provincia</label>
                 <select
                   class="form-select"
-                  [(ngModel)]="
-                    newCliente.indirizzoSedeOperativa.comune.provincia
-                  "
+                  [ngModel]="newCliente.indirizzoSedeOperativa.provincia"
+                  (ngModelChange)="onChangeProvinciaOperativa($event)"
                   name="nome"
                   class="form-control"
                 >
@@ -197,7 +196,10 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
                 class="form-control"
               >
                 <option selected>Seleziona Comune</option>
-                <option *ngFor="let item of comuni" [ngValue]="item">
+                <option
+                  *ngFor="let item of comuniSedeOperativa"
+                  [ngValue]="item"
+                >
                   {{ item.nome }}
                 </option>
               </select>
@@ -256,7 +258,8 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
               <label>Provincia</label>
               <select
                 class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeLegale.comune.provincia"
+                [ngModel]="newCliente.indirizzoSedeLegale.provincia"
+                (ngModelChange)="onChangeProvinciaLegale($event)"
                 name="nome"
                 class="form-control"
               >
@@ -277,24 +280,44 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
                 class="form-control"
               >
                 <option selected>Seleziona Comune</option>
-                <option *ngFor="let item of comuni" [ngValue]="item">
+                <option *ngFor="let item of comuniSedeLegale" [ngValue]="item">
                   {{ item.nome }}
                 </option>
               </select>
             </div>
           </div>
-          <button
-            type="submit"
-            class="btn btnAddUser col my-3 btn-success"
-            (click)="modificaCliente(newCliente)"
-          >
-            Modifica
-          </button>
+          <div class="d-flex justify-content-evenly">
+            <button
+              type="submit"
+              class="btn my-3 btn-success pulsantiInt"
+              title="salva"
+              (click)="modificaCliente(newCliente)"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button
+              [routerLink]="['/clienti']"
+              routerLinkActive="active"
+              title="indietro"
+              class="btn btn-danger my-3 pulsantiInt"
+            >
+              <i class="bi bi-backspace"></i>
+            </button>
+          </div>
         </form>
       </div>
     </div>
   `,
-  styles: [],
+  styles: [
+    `
+      input,
+      select {
+        background-color: black;
+        color: white;
+        border: 1px solid blanchedalmond;
+      }
+    `,
+  ],
 })
 export class ModificaClientePage implements OnInit {
   constructor(
@@ -306,11 +329,12 @@ export class ModificaClientePage implements OnInit {
   ) {}
 
   tipiClienti: any;
-  comuni: Comune[];
+  comuniSedeLegale: Comune[];
+  comuniSedeOperativa: Comune[];
   province: Provincia[];
   response: any;
-  idCliente: any
-  cliente:Cliente
+  idCliente: any;
+  cliente: Cliente;
 
   newCliente: Cliente = new Cliente();
 
@@ -320,28 +344,46 @@ export class ModificaClientePage implements OnInit {
     });
     this.comProvSrv.getAllProvince(0).subscribe((c) => {
       console.log(c);
-      this.response = c;
-      this.province = this.response.content;
+      this.province = (c as any).content;
     });
     this.comProvSrv.getAllComuni(0).subscribe((c) => {
-      this.response = c;
-      this.comuni = this.response.content;
+      console.log('c', c);
+      this.comuniSedeLegale = (c as any).content;
+      this.comuniSedeOperativa = (c as any).content;
     });
     this.route.params.subscribe((params) => {
       this.idCliente = +params['id'];
-    })
+    });
     this.clientSrv.getById(this.idCliente).subscribe((c) => {
-      this.response = c;
-      this.cliente = this.response;
-      console.log(this.cliente);
-      this.newCliente = this.cliente
-    })
+      this.cliente = c as any;
+      this.newCliente = this.cliente;
+    });
+  }
+
+  onChangeProvinciaLegale(event: Provincia) {
+    console.log(event);
+    // TODO assegnazione a newCliente.indirizzoSedeLegale.provincia da eseguire qua?
+    this.comProvSrv.getAllComuni(0).subscribe((c) => {
+      this.comuniSedeLegale = ((c as any).content as any[]).filter(
+        (comune) => comune.provincia.id === event.id
+      );
+    });
+  }
+
+  onChangeProvinciaOperativa(event: Provincia) {
+    console.log(event);
+    // TODO assegnazione a newCliente.indirizzoSedeOperativa.provincia da eseguire qua?
+    this.comProvSrv.getAllComuni(0).subscribe((c) => {
+      this.comuniSedeOperativa = ((c as any).content as any[]).filter(
+        (comune) => comune.provincia.id === event.id
+      );
+    });
   }
 
   modificaCliente(newCliente: Cliente) {
-    this.clientSrv.modifica(newCliente).subscribe(res => {
+    this.clientSrv.modifica(newCliente).subscribe((res) => {
       console.log(res);
       this.router.navigate(['/clienti']);
-    })
+    });
   }
 }

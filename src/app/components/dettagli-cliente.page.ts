@@ -172,25 +172,10 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
           <div class="form-row">
             <div class="form-group">
               <label>Provincia</label>
-              <!-- <select
-                class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeOperativa.comune.provincia"
-                name="nome"
-                class="form-control"
-                (change)="cambioCitta1($event)"
-              >
-                <option selected>Seleziona Provincia</option>
-                <option
-                  *ngFor="let item of province"
-                  id="{{ item.id }}"
-                  value="{{ item.id }}"
-                >
-                  {{ item.nome }}
-                </option>
-              </select> -->
               <select
                 class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeOperativa.comune.provincia"
+                [ngModel]="newCliente.indirizzoSedeOperativa.provincia"
+                (ngModelChange)="onChangeProvinciaOperativa($event)"
                 name="nome"
                 class="form-control"
               >
@@ -201,21 +186,9 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
               </select>
             </div>
           </div>
-
           <div class="form-row">
             <div class="form-group">
               <label>Comune</label>
-              <!-- <select
-                class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeOperativa.comune"
-                name="nome"
-                class="form-control"
-              >
-                <option selected>Seleziona Comune</option>
-                <option *ngFor="let item of filterComuni" value="{{ item.id }}">
-                  {{ item.nome }}
-                </option>
-              </select> -->
               <select
                 class="form-select"
                 [(ngModel)]="newCliente.indirizzoSedeOperativa.comune"
@@ -223,7 +196,10 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
                 class="form-control"
               >
                 <option selected>Seleziona Comune</option>
-                <option *ngFor="let item of comuni" [ngValue]="item">
+                <option
+                  *ngFor="let item of comuniSedeOperativa"
+                  [ngValue]="item"
+                >
                   {{ item.nome }}
                 </option>
               </select>
@@ -282,7 +258,8 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
               <label>Provincia</label>
               <select
                 class="form-select"
-                [(ngModel)]="newCliente.indirizzoSedeLegale.comune.provincia"
+                [ngModel]="newCliente.indirizzoSedeLegale.provincia"
+                (ngModelChange)="onChangeProvinciaLegale($event)"
                 name="nome"
                 class="form-control"
               >
@@ -303,7 +280,7 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
                 class="form-control"
               >
                 <option selected>Seleziona Comune</option>
-                <option *ngFor="let item of comuni" [ngValue]="item">
+                <option *ngFor="let item of comuniSedeLegale" [ngValue]="item">
                   {{ item.nome }}
                 </option>
               </select>
@@ -311,16 +288,25 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
           </div>
           <button
             type="submit"
-            class="btn btnAddUser col my-3 btn-success"
+            class="btn col my-3 btn-success pulsantiInt"
             (click)="addCliente(newCliente)"
           >
-            Aggiungi
+            <i class="bi bi-plus-circle"></i>
           </button>
         </form>
       </div>
     </div>
   `,
-  styles: [],
+  styles: [
+    `
+      input,
+      select {
+        background-color: black;
+        color: white;
+        border: 1px solid blanchedalmond;
+      }
+    `,
+  ],
 })
 export class DettagliClientePage implements OnInit {
   constructor(
@@ -331,10 +317,11 @@ export class DettagliClientePage implements OnInit {
   ) {}
 
   tipiClienti: any;
-  comuni: Comune[];
+  comuniSedeOperativa: Comune[];
+  comuniSedeLegale: Comune[];
   province: Provincia[];
   response: any;
-  idProvincia: any;
+  idCliente: any;
   provincia1: string;
   provincia2: string;
   filterComuni: Comune[] = [];
@@ -347,26 +334,32 @@ export class DettagliClientePage implements OnInit {
     });
     this.comProvSrv.getAllProvince(0).subscribe((c) => {
       console.log(c);
-      this.response = c;
-      this.province = this.response.content;
+      this.province = (c as any).content;
     });
     this.comProvSrv.getAllComuni(0).subscribe((c) => {
       console.log('c', c);
-      this.response = c;
-      this.comuni = this.response.content;
+      this.comuniSedeLegale = (c as any).content;
+      this.comuniSedeOperativa = (c as any).content;
     });
   }
-  cambioCitta1(event: any) {
-    this.idProvincia = event.target.value;
-    console.log(this.idProvincia);
-    let filterComuni: Array<any> = [];
-    this.comuni.filter((comune) => {
-      if (this.idProvincia == comune.provincia.id) {
-        filterComuni.push(comune);
-      }
+  onChangeProvinciaLegale(event: Provincia) {
+    console.log(event);
+    // TODO assegnazione a newCliente.indirizzoSedeLegale.provincia da eseguire qua?
+    this.comProvSrv.getAllComuni(0).subscribe((c) => {
+      this.comuniSedeLegale = ((c as any).content as any[]).filter(
+        (comune) => comune.provincia.id === event.id
+      );
     });
-    console.log(filterComuni);
-    this.filterComuni = filterComuni;
+  }
+
+  onChangeProvinciaOperativa(event: Provincia) {
+    console.log(event);
+    // TODO assegnazione a newCliente.indirizzoSedeOperativa.provincia da eseguire qua?
+    this.comProvSrv.getAllComuni(0).subscribe((c) => {
+      this.comuniSedeOperativa = ((c as any).content as any[]).filter(
+        (comune) => comune.provincia.id === event.id
+      );
+    });
   }
 
   addCliente(newCliente: Cliente) {

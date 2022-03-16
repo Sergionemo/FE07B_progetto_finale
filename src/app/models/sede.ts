@@ -1,4 +1,5 @@
 import { Comune } from "./comune";
+import { Provincia } from "./provincia";
 
 export class Sede {
   id!: number;
@@ -7,4 +8,5 @@ export class Sede {
   cap!: string;
   localita!: string;
   comune: Comune = new Comune();
+  provincia: Provincia = new Provincia();
 }

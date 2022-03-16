@@ -1,6 +1,5 @@
 import { Sede } from "./sede";
 
-
 export class Cliente {
   id: number;
   ragioneSociale: string;

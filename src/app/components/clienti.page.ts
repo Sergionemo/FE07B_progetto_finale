@@ -15,11 +15,12 @@ import { ClienteService } from '../services/cliente.service';
           <th scope="col">Partita Iva</th>
           <th scope="col">
             <a
-              class="btn btn-success"
+              class="btn text-success pulsantiInt"
+              title="aggiungi cliente"
               [routerLink]="['/dettagliCliente']"
               routerLinkActive="active"
-              >Nuovo Cliente</a
-            >
+              ><i class="bi bi-person-plus-fill"></i
+            ></a>
           </th>
         </tr>
       </thead>
@@ -31,24 +32,38 @@ import { ClienteService } from '../services/cliente.service';
           <td>{{ cliente.partitaIva }}</td>
           <td>
             <button
-              class="btn btn-info"
+              class="btn text-info pulsantiInt"
+              title="fatture"
               [routerLink]="['/fattureCliente', cliente.id]"
               routerLinkActive="active"
             >
-              Fatture
+              <i class="bi bi-list-ul"></i>
             </button>
           </td>
-          <td><button class="btn btn-warning" [routerLink]="['/modificaCliente', cliente.id]" routerLinkActive="active" >Modifica</button></td>
           <td>
-            <button class="btn btn-danger" (click)="open(mymodal)">
-              Elimina
+            <button
+              class="btn text-warning pulsantiInt"
+              title="modifica"
+              [routerLink]="['/modificaCliente', cliente.id]"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-pencil-square"></i>
+            </button>
+          </td>
+          <td>
+            <button
+              class="btn text-danger pulsantiInt"
+              title="elimina"
+              (click)="open(mymodal)"
+            >
+              <i class="bi bi-person-x"></i>
             </button>
             <ng-template #mymodal let-modal>
               <div class="modal-header">
                 <h4 class="modal-title" id="modal-basic-title">Sei sicuro?</h4>
                 <button
                   type="button"
-                  class="close"
+                  class="close btn"
                   aria-label="Close"
                   (click)="modal.dismiss('Cross click')"
                 >
@@ -81,18 +96,23 @@ import { ClienteService } from '../services/cliente.service';
         </tr>
       </tbody>
     </table>
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
+    <nav
+      aria-label="Page navigation"
+      class="d-flex justify-content-center mb-3"
+    >
+      <ul class="pagination mt-3">
         <li class="page-item" *ngIf="!response.first">
-          <a class="page-link" (click)="cambiaPag(response.number - 1)"
-            >Previous</a
-          >
+          <a class="myBtn" (click)="cambiaPag(response.number - 1)"
+            ><i class="bi bi-arrow-left"></i
+          ></a>
         </li>
         <li class="page-item" *ngFor="let pag of numP; let p = index">
-          <a class="page-link" (click)="cambiaPag(p)">{{ p + 1 }}</a>
+          <a class="myBtn" (click)="cambiaPag(p)">{{ p + 1 }}</a>
         </li>
         <li class="page-item" *ngIf="!response.last">
-          <a class="page-link" (click)="cambiaPag(response.number + 1)">Next</a>
+          <a class="myBtn" (click)="cambiaPag(response.number + 1)"
+            ><i class="bi bi-arrow-right"></i
+          ></a>
         </li>
       </ul>
     </nav>
@@ -101,6 +121,11 @@ import { ClienteService } from '../services/cliente.service';
     `
       a {
         cursor: pointer;
+        text-decoration: none;
+      }
+      .myBtn {
+        margin: 0;
+        border-radius: 0;
       }
     `,
   ],

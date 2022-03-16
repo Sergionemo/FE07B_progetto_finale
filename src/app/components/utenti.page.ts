@@ -22,23 +22,39 @@ import { User } from '../models/user';
         </tr>
       </tbody>
     </table>
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
+    <nav
+      aria-label="Page navigation"
+      class="d-flex justify-content-center mb-3"
+    >
+      <ul class="pagination mt-3">
         <li class="page-item" *ngIf="!response.first">
-          <a class="page-link" (click)="cambiaPag(response.number - 1)"
-            >Previous</a
-          >
+          <a class="myBtn" (click)="cambiaPag(response.number - 1)"
+            ><i class="bi bi-arrow-left"></i
+          ></a>
         </li>
         <li class="page-item" *ngFor="let pag of numP; let p = index">
-          <a class="page-link" (click)="cambiaPag(p)">{{ p + 1 }}</a>
+          <a class="myBtn" (click)="cambiaPag(p)">{{ p + 1 }}</a>
         </li>
         <li class="page-item" *ngIf="!response.last">
-          <a class="page-link" (click)="cambiaPag(response.number + 1)">Next</a>
+          <a class="myBtn" (click)="cambiaPag(response.number + 1)"
+            ><i class="bi bi-arrow-right"></i
+          ></a>
         </li>
       </ul>
     </nav>
   `,
-  styles: [],
+  styles: [
+    `
+      a {
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .myBtn {
+        margin: 0;
+        border-radius: 0;
+      }
+    `,
+  ],
 })
 export class UtentiPage implements OnInit {
   constructor(private authSrv: AuthService) {}
@@ -52,7 +68,7 @@ export class UtentiPage implements OnInit {
     this.authSrv.getAll(0).subscribe((c) => {
       this.response = c;
       console.log(this.response);
-      this.utenti = this.response.content
+      this.utenti = this.response.content;
       const numP = Array(this.response.totalPages);
       this.numP = numP;
     });

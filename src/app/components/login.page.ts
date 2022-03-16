@@ -28,7 +28,9 @@ import { AuthService } from '../services/auth.service';
         />
       </div>
       <div>
-        <button type="submit" class="btn btn-success">Log in</button>
+        <button type="submit" class="btn btn-success">
+          Log in <i class="bi bi-box-arrow-in-right"></i>
+        </button>
       </div>
     </form>
   `,
@@ -45,6 +47,7 @@ export class LoginPage implements OnInit {
 
   item!: any;
   users!: User;
+  isLogged: boolean;
 
   ngOnInit(): void {
     localStorage.getItem('utente');
@@ -55,17 +58,26 @@ export class LoginPage implements OnInit {
   }
 
   login(form: NgForm) {
-    console.log(form.value);
+    // console.log(form.value);
     this.item = form.value;
-    this.authSrv.login(this.item).subscribe((res) => {
-      console.log(res);
-      this.users = res;
-      localStorage.setItem('utente', JSON.stringify(this.users));
-      this.router.navigate(['/utenti']);
-      localStorage.getItem("utente");
-      console.log('localStorage.getItem("utente")', localStorage.getItem("utente"))
-    }, rej => {
-      alert("Errore nella compilazione dei campi");
-    });
+    this.authSrv.login(this.item).subscribe(
+      (res) => {
+        // console.log(res);
+        this.users = res;
+        localStorage.setItem('utente', JSON.stringify(this.users));
+        this.router.navigate(['/utenti']);
+        localStorage.getItem('utente');
+        // console.log('localStorage.getItem("utente")', localStorage.getItem("utente"))
+      },
+      (err) => {
+        switch (err.status) {
+          case 400:
+            alert('Credenziali mancanti');
+            break;
+          case 401:
+            alert('Credenziali sbagliate');
+        }
+      }
+    );
   }
 }
