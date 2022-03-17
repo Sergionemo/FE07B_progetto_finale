@@ -7,7 +7,6 @@ import { FatturaService } from '../services/fattura.service';
 
 @Component({
   template: `
-
     <table class="table">
       <thead>
         <tr>
@@ -21,7 +20,7 @@ import { FatturaService } from '../services/fattura.service';
           <th scope="col">
             <a
               class="btn text-success pulsantiInt"
-              [routerLink]="['/newFattura', id, lastPage]"
+              [routerLink]="['/newFattura', id]"
               routerLinkActive="active"
               ><i class="bi bi-plus-circle"></i
             ></a>
@@ -49,7 +48,7 @@ import { FatturaService } from '../services/fattura.service';
           <td>
             <a
               class="btn text-info pulsantiInt"
-              [routerLink]="['/dettagliFattura/', fattura.id ,lastPage]"
+              [routerLink]="['/dettagliFattura/', fattura.id, lastPage]"
               routerLinkActive="active"
               ><i class="bi bi-pencil-square"></i
             ></a>
@@ -149,21 +148,14 @@ export class FattureClientePage implements OnInit {
     this.route.params.subscribe((params) => {
       this.id = +params['id'];
       this.lastPage = +params['lastPage'];
-      console.log(this.lastPage);
-
-      console.log(this.id);
-      this.caricaDettagli(this.id);
-    });
-  }
-
-  caricaDettagli(id: number) {
-    this.clienteSrv.getFattureByCliente(id, 0).subscribe((c) => {
-      this.response = c;
-      this.fatture = this.response.content;
-      const numP = Array(this.response.totalPages);
-      this.numP = numP;
-      console.log(this.response.totalPages);
-      // console.log('this.fatture', this.fatture);
+      this.clienteSrv.getFattureByCliente(this.id, 0).subscribe((c) => {
+        this.response = c;
+        this.fatture = this.response.content;
+        const numP = Array(this.response.totalPages);
+        this.numP = numP;
+        // console.log(this.response.totalPages);
+        // console.log('this.fatture', this.fatture);
+      });
     });
   }
 

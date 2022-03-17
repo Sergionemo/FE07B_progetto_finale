@@ -57,7 +57,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'newFattura/:id/:lastPage',
+    path: 'newFattura/:id',
     component: NewFatturaPage,
     canActivate: [AuthGuard],
   },

@@ -8,7 +8,7 @@ import { FatturaService } from '../services/fattura.service';
 @Component({
   template: `
     <button
-      [routerLink]="['/fattureCliente', id, lastPage]"
+      [routerLink]="['/fattureCliente', id, 0]"
       routerLinkActive="active"
       title="indietro"
       class="btn btn-danger my-3 pulsantiInt back px-4"
@@ -127,6 +127,6 @@ export class NewFatturaPage implements OnInit {
     this.nuovaFattura.stato.id = form.value.stato;
     this.nuovaFattura.cliente.id = this.cliente.id;
     this.fattureSrv.creaFattura(this.nuovaFattura).subscribe();
-    this.router.navigate(['/fattureCliente', this.id, this.lastPage]);
+    this.router.navigate(['/clienti', 0]);
   }
 }
