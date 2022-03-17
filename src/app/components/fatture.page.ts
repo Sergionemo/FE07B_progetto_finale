@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FatturaService } from '../services/fattura.service';
 
@@ -29,7 +30,7 @@ import { FatturaService } from '../services/fattura.service';
             <a
               class="btn text-info pulsantiInt"
               title="modifica"
-              [routerLink]="['/dettagliFattura/', fattura.id]"
+              [routerLink]="['/dettagliFattura/', fattura.id, pagCorr]"
               routerLinkActive="active"
               ><i class="bi bi-pencil-square"></i
             ></a>
@@ -113,7 +114,8 @@ import { FatturaService } from '../services/fattura.service';
 export class FatturePage implements OnInit {
   constructor(
     private fatturaSrv: FatturaService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private route: ActivatedRoute
   ) {}
   fatture: any;
   response: any;
@@ -122,7 +124,10 @@ export class FatturePage implements OnInit {
   // numP: any;
 
   ngOnInit(): void {
-    this.fatturaSrv.getAll(0).subscribe((c) => {
+    this.route.params.subscribe((params) => {
+      this.pagCorr = +params['lastPage'];
+    });
+    this.fatturaSrv.getAll(this.pagCorr).subscribe((c) => {
       this.response = c;
       this.fatture = this.response.content;
       // const numP = Array(this.response.totalPages);

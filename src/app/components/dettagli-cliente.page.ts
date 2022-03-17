@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Cliente } from '../models/cliente';
 import { Comune } from '../models/comune';
 import { Provincia } from '../models/provincia';
@@ -286,13 +286,23 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
               </select>
             </div>
           </div>
-          <button
-            type="submit"
-            class="btn col my-3 btn-success pulsantiInt"
-            (click)="addCliente(newCliente)"
-          >
-            <i class="bi bi-plus-circle"></i>
-          </button>
+          <div class="d-flex justify-content-evenly">
+            <button
+              type="submit"
+              class="btn my-3 btn-success pulsantiInt"
+              (click)="addCliente(newCliente)"
+            >
+              <i class="bi bi-plus-circle"></i>
+            </button>
+            <button
+              [routerLink]="['/clienti', lastPage]"
+              routerLinkActive="active"
+              title="indietro"
+              class="btn btn-danger my-3 pulsantiInt"
+            >
+              <i class="bi bi-backspace"></i>
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -313,6 +323,7 @@ export class DettagliClientePage implements OnInit {
     private dettClienteSrv: DettagliClienteService,
     private comProvSrv: ComuniProvinceService,
     private router: Router,
+    private route: ActivatedRoute,
     private clientSrv: ClienteService
   ) {}
 
@@ -322,13 +333,15 @@ export class DettagliClientePage implements OnInit {
   province: Provincia[];
   response: any;
   idCliente: any;
-  provincia1: string;
-  provincia2: string;
-  filterComuni: Comune[] = [];
+  lastPage: number
 
   newCliente: Cliente = new Cliente();
 
   ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.idCliente = +params['id'];
+      this.lastPage = +params['lastPage'];
+    });
     this.dettClienteSrv.getTipiCliente().subscribe((c) => {
       this.tipiClienti = c;
     });
@@ -366,7 +379,9 @@ export class DettagliClientePage implements OnInit {
     console.log(newCliente);
     this.clientSrv.createCliente(newCliente).subscribe((res) => {
       console.log(res);
-      this.router.navigate(['/clienti']);
+      this.router.navigate(['/clienti/0']);
+    }, err => {
+      alert("Inseire tutti i campi")
     });
   }
 }

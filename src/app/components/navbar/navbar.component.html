@@ -1,4 +1,4 @@
-<header class="navbar navbar-dark sticky-top p-0 shadow justify-content-center myNav mb-3 row">
+<header class="navbar navbar-dark sticky-top p-0 shadow justify-content-center myNav mb-3">
   <nav class="navbar navbar-expand navbar-light col-11 justify-content-center">
     <ul class="navbar-nav">
       <li class="nav-item mx-2">
@@ -16,15 +16,15 @@
           <a class="nav-link" [routerLink]="['/utenti']" routerLinkActive="active" *ngIf="isLoggedUser()">Utenti</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link" [routerLink]="['/clienti']" routerLinkActive="active" *ngIf="isLoggedUser()">Clienti</a>
+          <a class="nav-link" [routerLink]="['/clienti/0']" routerLinkActive="active" *ngIf="isLoggedUser()">Clienti</a>
         </li>
         <li class="nav-item mx-2">
-          <a class="nav-link" [routerLink]="['/fatture']" routerLinkActive="active" *ngIf="isLoggedUser()">Fatture</a>
+          <a class="nav-link" [routerLink]="['/fatture/0']" routerLinkActive="active" *ngIf="isLoggedUser()">Fatture</a>
         </li>
 
       </ul>
   </nav>
   <div class="navbar-nav d-flex justify-content-end col-1">
-      <a class="nav-link px-3 btn text-danger signout pulsantiInt" (click)="Logout()" *ngIf="isLoggedUser()"><i class="bi bi-door-closed"></i></a>
+      <a title="logout" class="nav-link px-3 btn text-danger signout pulsantiInt" (click)="Logout()" *ngIf="isLoggedUser()"><i class="bi bi-door-closed"></i></a>
   </div>
 </header>

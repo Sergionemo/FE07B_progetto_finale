@@ -7,6 +7,7 @@ import { FatturaService } from '../services/fattura.service';
 
 @Component({
   template: `
+
     <table class="table">
       <thead>
         <tr>
@@ -20,10 +21,19 @@ import { FatturaService } from '../services/fattura.service';
           <th scope="col">
             <a
               class="btn text-success pulsantiInt"
-              [routerLink]="['/newFattura', id]"
+              [routerLink]="['/newFattura', id, lastPage]"
               routerLinkActive="active"
               ><i class="bi bi-plus-circle"></i
             ></a>
+          </th>
+          <th scope="col">
+            <button
+              class="btn btn-danger px-4"
+              [routerLink]="['/clienti', lastPage]"
+              routerLinkActive="active"
+            >
+              <i class="bi bi-arrow-left"></i>
+            </button>
           </th>
         </tr>
       </thead>
@@ -39,7 +49,7 @@ import { FatturaService } from '../services/fattura.service';
           <td>
             <a
               class="btn text-info pulsantiInt"
-              [routerLink]="['/dettagliFattura/', fattura.id]"
+              [routerLink]="['/dettagliFattura/', fattura.id ,lastPage]"
               routerLinkActive="active"
               ><i class="bi bi-pencil-square"></i
             ></a>
@@ -90,7 +100,7 @@ import { FatturaService } from '../services/fattura.service';
       aria-label="Page navigation"
       class="d-flex justify-content-center mb-3"
     >
-      <ul class="pagination mt-3">
+      <ul class="pagination mt-3" *ngIf="response.totalPages !== 1">
         <li class="page-item" *ngIf="!response.first">
           <a class="myBtn" (click)="cambiaPag(response.number - 1)"
             ><i class="bi bi-arrow-left"></i
@@ -132,11 +142,15 @@ export class FattureClientePage implements OnInit {
   fatture: Fattura[];
   numP: any;
   id!: number;
+  lastPage: number;
   closeResult: any;
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.id = +params['id'];
+      this.lastPage = +params['lastPage'];
+      console.log(this.lastPage);
+
       console.log(this.id);
       this.caricaDettagli(this.id);
     });
@@ -148,8 +162,8 @@ export class FattureClientePage implements OnInit {
       this.fatture = this.response.content;
       const numP = Array(this.response.totalPages);
       this.numP = numP;
-      // console.log(this.numP);
-      console.log('this.fatture', this.fatture);
+      console.log(this.response.totalPages);
+      // console.log('this.fatture', this.fatture);
     });
   }
 

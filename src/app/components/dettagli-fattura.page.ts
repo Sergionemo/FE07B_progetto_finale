@@ -7,6 +7,7 @@ import { FatturaService } from '../services/fattura.service';
 
 @Component({
   template: `
+
     <form #form="ngForm" (ngSubmit)="salva(form)">
       <div class="card text-center">
         <div class="card-body">
@@ -29,6 +30,14 @@ import { FatturaService } from '../services/fattura.service';
           <div class="d-flex mt-5 justify-content-evenly">
             <button type="submit" class="btn text-success pulsantiInt">
               <i class="bi bi-check-circle"></i>
+            </button>
+            <button
+              [routerLink]="['/fatture/0']"
+              routerLinkActive="active"
+              title="indietro"
+              class="btn btn-secondary my-3 pulsantiInt"
+            >
+              <i class="bi bi-backspace"></i>
             </button>
             <button class="btn text-danger pulsantiInt" (click)="open(mymodal)">
               <i class="bi bi-trash"></i>
@@ -98,6 +107,9 @@ export class DettagliFatturaPage implements OnInit {
   response: any;
   cliente: Cliente;
   closeResult = '';
+  lastPage: number
+  idFatt: number
+  idCliente: number
 
   constructor(
     private fatturaSrv: FatturaService,
@@ -108,8 +120,10 @@ export class DettagliFatturaPage implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const id = +params['id'];
-      this.caricaDettagli(id);
+      this.idFatt = +params['id'];
+      this.lastPage = +params["lastPage"];
+
+      this.caricaDettagli(this.idFatt);
     });
   }
 
@@ -124,13 +138,13 @@ export class DettagliFatturaPage implements OnInit {
     this.fattura.stato.id = form.value.stato;
     this.fatturaSrv.modifica(this.fattura).subscribe((res) => {
       console.log(res);
-      this.router.navigate(['/fatture']);
+      this.router.navigate(['/fatture/0']);
     });
   }
 
   elimina(id: number) {
     this.fatturaSrv.delete(id).subscribe(() => {
-      this.router.navigate(['/fatture']);
+      this.router.navigate(['/fatture/0']);
     });
   }
   open(content) {

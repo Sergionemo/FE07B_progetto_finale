@@ -27,7 +27,7 @@ const routes: Routes = [
     component: SignupPage,
   },
   {
-    path: 'clienti',
+    path: 'clienti/:lastPage',
     component: ClientiPage,
     canActivate: [AuthGuard],
   },
@@ -37,32 +37,32 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'fatture',
+    path: 'fatture/:lastPage',
     component: FatturePage,
     canActivate: [AuthGuard],
   },
   {
-    path: 'dettagliCliente',
+    path: 'dettagliCliente/:lastPage',
     component: DettagliClientePage,
     canActivate: [AuthGuard],
   },
   {
-    path: 'dettagliFattura/:id',
+    path: 'dettagliFattura/:id/:lastPage',
     component: DettagliFatturaPage,
     canActivate: [AuthGuard],
   },
   {
-    path: 'fattureCliente/:id',
+    path: 'fattureCliente/:id/:lastPage',
     component: FattureClientePage,
     canActivate: [AuthGuard],
   },
   {
-    path: 'newFattura/:id',
+    path: 'newFattura/:id/:lastPage',
     component: NewFatturaPage,
     canActivate: [AuthGuard],
   },
   {
-    path: 'modificaCliente/:id',
+    path: 'modificaCliente/:id/:lastPage',
     component: ModificaClientePage,
     canActivate: [AuthGuard],
   },

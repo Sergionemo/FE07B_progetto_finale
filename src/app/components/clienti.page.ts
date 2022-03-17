@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Cliente } from '../models/cliente';
 import { ClienteService } from '../services/cliente.service';
@@ -17,7 +17,7 @@ import { ClienteService } from '../services/cliente.service';
             <a
               class="btn text-success pulsantiInt"
               title="aggiungi cliente"
-              [routerLink]="['/dettagliCliente']"
+              [routerLink]="['/dettagliCliente', pagCorr]"
               routerLinkActive="active"
               ><i class="bi bi-person-plus-fill"></i
             ></a>
@@ -34,7 +34,7 @@ import { ClienteService } from '../services/cliente.service';
             <button
               class="btn text-info pulsantiInt"
               title="fatture"
-              [routerLink]="['/fattureCliente', cliente.id]"
+              [routerLink]="['/fattureCliente', cliente.id, pagCorr]"
               routerLinkActive="active"
             >
               <i class="bi bi-list-ul"></i>
@@ -44,7 +44,7 @@ import { ClienteService } from '../services/cliente.service';
             <button
               class="btn text-warning pulsantiInt"
               title="modifica"
-              [routerLink]="['/modificaCliente', cliente.id]"
+              [routerLink]="['/modificaCliente', cliente.id, pagCorr]"
               routerLinkActive="active"
             >
               <i class="bi bi-pencil-square"></i>
@@ -134,7 +134,8 @@ export class ClientiPage implements OnInit {
   constructor(
     private clientiSrv: ClienteService,
     private router: Router,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private route: ActivatedRoute
   ) {}
 
   closeResult = '';
@@ -145,7 +146,10 @@ export class ClientiPage implements OnInit {
   pagCorr: number = 0;
 
   ngOnInit(): void {
-    this.clientiSrv.getAll(0).subscribe((c) => {
+    this.route.params.subscribe((params) => {
+      this.pagCorr = +params["lastPage"];
+    })
+    this.clientiSrv.getAll(this.pagCorr).subscribe((c) => {
       // console.log(c);
       this.response = c;
       this.clienti = this.response.content;
@@ -157,12 +161,12 @@ export class ClientiPage implements OnInit {
 
   cambiaPag(page: number) {
     this.clientiSrv.getAll(page).subscribe((c) => {
-      console.log(page);
+      // console.log(page);
       // console.log(c);
       this.response = c;
       this.clienti = this.response.content;
       this.pagCorr = page;
-      // console.log(this.pagCorr);
+      console.log(this.pagCorr);
     });
   }
 
@@ -177,6 +181,10 @@ export class ClientiPage implements OnInit {
       console.log(c);
       this.router.navigate(['/clienti']);
       this.clienti.splice(i, 1);
+    });
+    this.clientiSrv.getAll(this.pagCorr).subscribe((c) => {
+      this.response = c;
+      this.clienti = this.response.content;
     });
   }
 

@@ -7,6 +7,14 @@ import { FatturaService } from '../services/fattura.service';
 
 @Component({
   template: `
+    <button
+      [routerLink]="['/fattureCliente', id, lastPage]"
+      routerLinkActive="active"
+      title="indietro"
+      class="btn btn-danger my-3 pulsantiInt back px-4"
+    >
+      <i class="bi bi-backspace"></i>
+    </button>
     <form #form="ngForm" (ngSubmit)="crea(form)">
       <div class="card">
         <div class="card-body">
@@ -24,14 +32,15 @@ import { FatturaService } from '../services/fattura.service';
               class="form-control"
             />
           </div>
-          <label class="card-text m-2">
-            Stato Fattura :
+          <div class="m-2">
+            <label class="card-text"> Stato Fattura : </label>
             <select name="stato" id="stato" ngModel class="form-select">
               <option value=""></option>
               <option value="2">PAGATA</option>
               <option value="1">NON PAGATA</option>
             </select>
-          </label>
+          </div>
+
           <div class="m-2">
             <label class="card-text" for="numFatt">Numero fattura: </label>
             <input
@@ -61,7 +70,12 @@ import { FatturaService } from '../services/fattura.service';
   styles: [
     `
       form {
-        margin: 20vh 20vw;
+        margin: 15vh 20vw;
+      }
+      .back {
+        position: absolute;
+        right: 1vw;
+        top: 5vh;
       }
     `,
   ],
@@ -78,10 +92,12 @@ export class NewFatturaPage implements OnInit {
   cliente: Cliente;
   response: any;
   nuovaFattura: any;
+  lastPage: number;
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.id = +params['id'];
+      this.lastPage = +params['lastPage'];
       this.clientiSrv.getById(this.id).subscribe((res) => {
         this.response = res;
         console.log('this.response', this.response);
@@ -111,6 +127,6 @@ export class NewFatturaPage implements OnInit {
     this.nuovaFattura.stato.id = form.value.stato;
     this.nuovaFattura.cliente.id = this.cliente.id;
     this.fattureSrv.creaFattura(this.nuovaFattura).subscribe();
-    this.router.navigate(['/clienti']);
+    this.router.navigate(['/fattureCliente', this.id, this.lastPage]);
   }
 }

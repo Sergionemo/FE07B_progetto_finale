@@ -296,7 +296,7 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
               <i class="bi bi-pencil-square"></i>
             </button>
             <button
-              [routerLink]="['/clienti']"
+              [routerLink]="['/clienti', lastPage]"
               routerLinkActive="active"
               title="indietro"
               class="btn btn-danger my-3 pulsantiInt"
@@ -334,6 +334,7 @@ export class ModificaClientePage implements OnInit {
   province: Provincia[];
   response: any;
   idCliente: any;
+  lastPage: number
   cliente: Cliente;
 
   newCliente: Cliente = new Cliente();
@@ -353,6 +354,7 @@ export class ModificaClientePage implements OnInit {
     });
     this.route.params.subscribe((params) => {
       this.idCliente = +params['id'];
+      this.lastPage = +params["lastPage"]
     });
     this.clientSrv.getById(this.idCliente).subscribe((c) => {
       this.cliente = c as any;
@@ -383,7 +385,7 @@ export class ModificaClientePage implements OnInit {
   modificaCliente(newCliente: Cliente) {
     this.clientSrv.modifica(newCliente).subscribe((res) => {
       console.log(res);
-      this.router.navigate(['/clienti']);
+      this.router.navigate(['/clienti', this.lastPage]);
     });
   }
 }
