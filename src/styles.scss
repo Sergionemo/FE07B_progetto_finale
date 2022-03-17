@@ -8,7 +8,7 @@
 }
 
 body {
-  background: black;
+  background: rgb(32, 32, 32);
   color: white;
 }
 
@@ -19,12 +19,16 @@ th {
 
 .myBtn {
   color: white;
-  background-color: black;
+  background-color: rgb(0, 0, 0);
   border: 1px solid blanchedalmond;
   padding: 16px;
   margin: 1rem;
   border-radius: 10px;
   font-size: 1.5rem;
+}
+
+.myBtn:hover{
+  color: blanchedalmond;
 }
 
 .card{
@@ -38,6 +42,8 @@ th {
 
 .myNav{
   background: url("https://i.imgur.com/ayLqJGf.jpg");
+  background-position: center;
+  background-size: cover;
 }
 
 .modal-title, .modal-body{
@@ -45,5 +51,10 @@ th {
 }
 
 .signout, .myNav{
+  font-size: 1.3rem;
+}
+
+label{
+  margin-top: 1.2rem;
   font-size: 1.3rem;
 }

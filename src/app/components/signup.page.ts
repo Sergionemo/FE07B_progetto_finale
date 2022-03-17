@@ -85,12 +85,12 @@ export class SignupPage implements OnInit {
     this.user.username = form.username;
     this.user.email = form.email;
     this.user.password = form.password;
-    this.user.role = r;
-    
+    this.user.role = r[0];
+
     this.authSrv.signup(this.user).subscribe((res) => {
       console.log(res);
       this.router.navigate(['/login']);
     });
-    console.log(this.user);
+    // console.log(this.user);
   }
 }

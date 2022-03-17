@@ -123,10 +123,10 @@ import { DettagliClienteService } from '../services/dettagli-cliente.service';
     <!--Sedi-->
     <!--Sede operativa-->
 
-    <div class="form-row justify-content-around container">
+    <div class="form-row justify-content-around container mt-3">
       <h2>Sede operativa</h2>
       <div class="col">
-        <form class="mt-3 ">
+        <form>
           <div class="form-row">
             <div class="form-group">
               <label>Indirizzo</label>
