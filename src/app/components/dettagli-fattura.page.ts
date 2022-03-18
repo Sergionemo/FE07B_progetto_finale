@@ -32,7 +32,7 @@ import { FatturaService } from '../services/fattura.service';
               <i class="bi bi-check-circle"></i>
             </button>
             <button
-              [routerLink]="['/fatture/0']"
+              [routerLink]="['/fatture', lastPage]"
               routerLinkActive="active"
               title="indietro"
               class="btn btn-secondary my-3 pulsantiInt"
