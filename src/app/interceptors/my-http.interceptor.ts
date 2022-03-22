@@ -16,10 +16,11 @@ export class MyHttpInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
     let authReq: HttpRequest<any> = req.clone({
-      headers: req.headers.set(
+      headers: req.headers
+        .set(
           'Authorization',
           'Bearer ' +
-            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0NjkwNDYwOSwiZXhwIjoxNjQ3NzY4NjA5fQ.sA-95t2IpeekNS_8Cg45QgL3UCBBJ8s6QqbdEJ9cddejfRIcu3FIJTxWTq_L30IorlIAPJf-EM9OjX3EQ7j4Jg'
+            'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTY0Nzk2NjI4NSwiZXhwIjoxNjQ4ODMwMjg1fQ.TbfZqvmWhI2juS3it0ncw3Wx-mV3YSb_EOAfexRxb56By0LdojpcQhd9WxbBtI4S9kY9dzppPpAtUsS_0InO5Q'
         )
         .set('X-TENANT-ID', 'fe_0721b'),
     });
